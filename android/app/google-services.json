@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "196464198231",
+    "project_id": "frailty-5bee4",
+    "storage_bucket": "frailty-5bee4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196464198231:android:7d11fe6d5da64902819912",
+        "android_client_info": {
+          "package_name": "com.example.frailtyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-ABSURFgvuWfH6d7h-A_-av-6rzmd4TA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

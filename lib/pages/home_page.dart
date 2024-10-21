@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frailtyapp/components/my_button.dart';
 import 'package:frailtyapp/helper/sp_service.dart';
+import 'package:frailtyapp/pages/mobility%20test/part1_intro.dart';
+import 'package:frailtyapp/pages/mobility%20test/part2_intro.dart';
 
 import 'login & singup/intro_screen/general/survey.dart';
 
@@ -89,8 +91,9 @@ class _HomePageState extends State<HomePage> {
                                 text: userData!["username"], // The username
                                 style: TextStyle(
                                   fontSize: 24, // Same size for the username
-                                  color: Colors
-                                      .blue, // Different color for the username
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary, // Different color for the username
                                   fontWeight: FontWeight.bold, // Bold username
                                 ),
                               ),
@@ -134,6 +137,64 @@ class _HomePageState extends State<HomePage> {
                                 ? Icon(Icons.check, color: Colors.white)
                                 : Text(
                                     'PRISMA-7',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Part1_intro(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: userData["progress"] > 1
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: userData["progress"] > 1
+                                ? Icon(Icons.check, color: Colors.white)
+                                : Text(
+                                    'Part 1 - Mobility',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Part2_intro(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: userData["progress"] > 2
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: userData["progress"] > 2
+                                ? Icon(Icons.check, color: Colors.white)
+                                : Text(
+                                    'Part 2 - Mobility',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

@@ -253,10 +253,13 @@ class _TUGTestState extends State<TUGTest> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 50, vertical: 20),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         'Back to Home',
                                         style: TextStyle(
-                                            fontSize: 20, color: Colors.white),
+                                            fontSize: 20,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
                                       ),
                                     ),
                                   ],
@@ -349,7 +352,10 @@ class _TUGTestState extends State<TUGTest> {
                                         ? 'Start Test'
                                         : 'Start Second Try',
                                     style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
                                 ),
                         ],
@@ -371,9 +377,11 @@ class _TUGTestState extends State<TUGTest> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 20),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Stop Test',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ),
                   )

@@ -16,6 +16,7 @@ dependencies:
   flutter_tts: ^4.0.2
   dropdown_search: ^6.0.1
   sensors_plus: ^6.1.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

@@ -74,7 +74,7 @@ class _Part1_introState extends State<Part1_intro> {
                       child: Text(
                         "Let's Test It",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize:
                                 fontSize * 1.2), // Dynamic font size for button
                       ),
@@ -114,7 +114,7 @@ class _Part1_introState extends State<Part1_intro> {
               ),
               IconButton(
                 icon: const Icon(Icons.volume_up),
-                //color: Colors.white, // Change icon color for contrast
+                //color: Theme.of(context).colorScheme.onPrimary, // Change icon color for contrast
                 onPressed: () {
                   speechService.speak(
                       instruction); // Call the speech service to read out the instruction

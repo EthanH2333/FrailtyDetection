@@ -5,6 +5,8 @@ import 'package:frailtyapp/components/my_button.dart';
 import 'package:frailtyapp/helper/sp_service.dart';
 import 'package:frailtyapp/pages/mobility%20test/part1_intro.dart';
 import 'package:frailtyapp/pages/mobility%20test/part2_intro.dart';
+import 'package:frailtyapp/pages/plan_page.dart';
+import 'package:frailtyapp/pages/waiting_page.dart';
 
 import 'login & singup/intro_screen/general/survey.dart';
 
@@ -67,6 +69,7 @@ class _HomePageState extends State<HomePage> {
 
             // extract data
             Map<String, dynamic>? userData = snapshot.data!.data();
+            //print("information: $userData");
 
             return Scaffold(
               body: SafeArea(
@@ -84,7 +87,9 @@ class _HomePageState extends State<HomePage> {
                             text: 'Welcome back ', // Regular text
                             style: TextStyle(
                               fontSize: 24, // Size of the welcome text
-                              color: Colors.black, // Color of the regular text
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondary, // Color of the regular text
                             ),
                             children: [
                               TextSpan(
@@ -102,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                                     '!', // Exclamation mark after the username
                                 style: TextStyle(
                                   fontSize: 24,
-                                  color: Colors.black,
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
                                 ),
                               ),
                             ],
@@ -134,11 +140,16 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.all(20),
                           child: Center(
                             child: userData["progress"] > 0
-                                ? Icon(Icons.check, color: Colors.white)
+                                ? Icon(Icons.check,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary)
                                 : Text(
                                     'PRISMA-7',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
                           ),
                         ),
@@ -163,11 +174,16 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.all(20),
                           child: Center(
                             child: userData["progress"] > 1
-                                ? Icon(Icons.check, color: Colors.white)
+                                ? Icon(Icons.check,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary)
                                 : Text(
                                     'Part 1 - Mobility',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
                           ),
                         ),
@@ -192,12 +208,87 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.all(20),
                           child: Center(
                             child: userData["progress"] > 2
-                                ? Icon(Icons.check, color: Colors.white)
+                                ? Icon(Icons.check,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary)
                                 : Text(
                                     'Part 2 - Mobility',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WaitingPage(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: userData["progress"] == 3
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: userData["progress"] == 3
+                                ? Text(
+                                    'Get Your Personal Plan',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                                  )
+                                : Icon(Icons.check,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlanPage(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: userData["progress"] == 4
+                                ? Theme.of(context).colorScheme.primary
+                                : Colors.grey,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: userData["progress"] == 4
+                                ? Text(
+                                    'See Your Personal Plan',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                                  )
+                                : Icon(Icons.not_interested_outlined,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                           ),
                         ),
                       ),

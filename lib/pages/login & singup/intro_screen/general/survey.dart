@@ -67,6 +67,19 @@ class _SelectOneState extends State<SelectOne> {
     // Determine risk level
     bool haveRisk = score < 5;
 
+    // Prepare the question and answer list
+    List<Map<String, String>> qaList = [];
+
+    for (int i = 0; i < questionList.length; i++) {
+      String question = questionList[i];
+      String answerIndex = finalAns[i];
+      String answerText = options[int.parse(answerIndex)];
+      qaList.add({
+        'question': question,
+        'answer': answerText,
+      });
+    }
+
     // Get current user
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -76,6 +89,7 @@ class _SelectOneState extends State<SelectOne> {
           {
             'GeneralRiskScore': score,
             'HaveGeneralRisk': haveRisk,
+            'PRISMA-7': qaList,
             'progress': 1, // Update the process to 1
           },
           SetOptions(

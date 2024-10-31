@@ -50,7 +50,7 @@ class _Part2_introState extends State<Part2_intro> {
                   child: Text(
                     "Let's Test It",
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize:
                             fontSize * 1.2), // Dynamic font size for button
                   ),

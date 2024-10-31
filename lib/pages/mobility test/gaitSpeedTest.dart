@@ -38,6 +38,12 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
   bool hasFinishedTest = false;
   StreamSubscription? accelerometerSubscription;
 
+  double velocityX = 0.0;
+  double velocityY = 0.0;
+  double velocityZ = 0.0;
+  double previousTimestamp = 0.0;
+  var seconds = 0;
+
   // Countdown function that speaks the countdown and starts the test
   Future<void> startCountdown() async {
     speechService.speak(
@@ -102,7 +108,97 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
     }
   }
 
-  // Start the test and initialize sensor listening
+  void startTest() {
+    setState(() {
+      isCountingDown = false;
+      testInProgress = true;
+      startTime = DateTime.now().millisecondsSinceEpoch / 1000.0;
+      distanceWalked = 0.0; // Reset the walked distance
+      seconds = 0;
+    });
+
+    // Listen to user accelerometer data (filtered acceleration data)
+    accelerometerSubscription = userAccelerometerEvents.listen(
+      (UserAccelerometerEvent event) {
+        double currentTime = DateTime.now().millisecondsSinceEpoch / 1000.0;
+
+        if (previousTimestamp == 0.0) {
+          previousTimestamp = currentTime;
+          return; // Skip the first event as we don't have a previous timestamp to calculate delta time
+        }
+
+        double deltaTime = currentTime - previousTimestamp;
+        previousTimestamp = currentTime;
+
+        // Calculate the change in velocity and estimate the distance walked
+        updateTestProgress(event, deltaTime);
+      },
+      onError: (error) {
+        print("Sensor error: $error");
+      },
+      cancelOnError: true,
+    );
+  }
+
+  void updateTestProgress(UserAccelerometerEvent event, double deltaTime) {
+    // Calculate the approximate velocity in each direction
+    velocityX += event.x * deltaTime;
+    velocityY += event.y * deltaTime;
+    velocityZ += event.z * deltaTime;
+
+    // Calculate the total velocity (magnitude) and approximate distance walked
+    double totalVelocity = sqrt(
+        velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ);
+    double deltaDistance = totalVelocity * deltaTime;
+    distanceWalked += deltaDistance;
+
+    // Once the user enters the testing zone after 1 meter
+    if (distanceWalked >= 1.0 && !hasReachedTestingZone) {
+      hasReachedTestingZone = true;
+      speechService
+          .speak("Now keep the speed, you are in your testing zone now.");
+      startTime = DateTime.now().millisecondsSinceEpoch /
+          1000.0; // Reset start time for testing zone
+    }
+
+    // Once the user walks 4 meters, stop the test
+    if (distanceWalked >= 4.0 && testInProgress) {
+      speechService
+          .speak("Now you finished your test, please slow down and rest.");
+      stopTest();
+    }
+  }
+
+  void stopTest() {
+    accelerometerSubscription?.cancel(); // Stop listening to accelerometer
+
+    // Get the current time when the test finishes
+    double endTime = DateTime.now().millisecondsSinceEpoch / 1000.0;
+
+    // Calculate the total time spent in the 3-meter testing zone (excluding the 1-meter acceleration)
+    double totalTime = endTime - startTime;
+
+    // Calculate gait speed (distance covered in the 4-meter testing zone divided by time)
+    double gaitSpeed = 4.0 / totalTime;
+
+    setState(() {
+      testInProgress = false;
+      if (testAttempt == 1) {
+        firstTestTime = totalTime;
+        firstTestSpeed = gaitSpeed;
+        testAttempt = 2;
+      } else {
+        secondTestTime = totalTime;
+        secondTestSpeed = gaitSpeed;
+        testCompleted = true;
+      }
+    });
+
+    speechService.speak(
+        "Test completed. Time taken: ${totalTime.toStringAsFixed(2)} seconds, speed: ${gaitSpeed.toStringAsFixed(2)} meters per second.");
+  }
+
+  /* // Start the test and initialize sensor listening
   void startTest() {
     setState(() {
       isCountingDown = false;
@@ -214,7 +310,7 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
     // Announce the results of the test
     speechService.speak(
         "Test completed. Time taken: ${totalTime.toStringAsFixed(2)} seconds, speed: ${gaitSpeed.toStringAsFixed(2)} metres per second.");
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -270,10 +366,13 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 50, vertical: 20),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   'Back to Home Page',
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
+                                    fontSize: 20,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
                             ],
@@ -365,7 +464,10 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
                                     ? 'Start Test'
                                     : 'Start Second Try',
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                                    fontSize: 20,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                             ),
                       const SizedBox(height: 16),
@@ -384,10 +486,13 @@ class _GaitSpeedTestState extends State<GaitSpeedTest> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 50, vertical: 20),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Stop Test',
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                                    fontSize: 20,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                             )
                           : const SizedBox(),

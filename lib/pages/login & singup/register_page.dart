@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/components/my_button.dart';
-import 'package:frailtyapp/components/my_textfield.dart';
-import 'package:frailtyapp/helper/helper_function.dart';
+import 'package:StrideWell/components/my_button.dart';
+import 'package:StrideWell/components/my_textfield.dart';
+import 'package:StrideWell/helper/helper_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:frailtyapp/pages/home_page.dart';
-import 'package:frailtyapp/pages/login%20&%20singup/login_page.dart';
+import 'package:StrideWell/pages/home_page.dart';
+import 'package:StrideWell/pages/login%20&%20singup/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -98,173 +98,180 @@ class _RegisterPage extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(25),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            // logo
-            Icon(
-              Icons.health_and_safety_rounded,
-              size: 80,
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            const SizedBox(height: 25),
-
-            // app name
-            Text(
-              "Frailty App",
-              style: TextStyle(fontSize: 25),
-            ),
-            const SizedBox(height: 50),
-
-            // username textfeld
-            TextFormField(
-              controller: userController,
-              decoration: InputDecoration(
-                fillColor: Theme.of(context).colorScheme.primary,
-                prefixIcon: Icon(Icons.person),
-                labelText: "User Name",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(25),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ClipOval(
+                child: Image.asset(
+                  'lib/image/icon.png',
+                  width: screenWidth * 0.3,
+                  height: screenWidth * 0.3,
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
 
-            // email textfeld
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                fillColor: Theme.of(context).colorScheme.primary,
-                prefixIcon: Icon(Icons.email),
-                labelText: "Email",
-                hintText: "XXX@XXX.XXX",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+              //const SizedBox(height: 25),
+
+              // app name
+              Text(
+                "Stride Well",
+                style: TextStyle(fontSize: 25),
               ),
-            ),
-            const SizedBox(height: 10),
+              const SizedBox(height: 50),
+              const SizedBox(height: 50),
 
-            // password textfeld
-            TextFormField(
-              controller: passwordController,
-              obscureText: isPasswordVisible ? false : true,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: "Password",
-                  //hintText: "password",
+              // username textfeld
+              TextFormField(
+                controller: userController,
+                decoration: InputDecoration(
+                  fillColor: Theme.of(context).colorScheme.primary,
+                  prefixIcon: Icon(Icons.person),
+                  labelText: "User Name",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                      icon: Icon(isPasswordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility))),
-            ),
-            const SizedBox(height: 10),
+                ),
+              ),
+              const SizedBox(height: 10),
 
-            // confirm password textfeld
-            TextFormField(
-              controller: comfirmPassController,
-              obscureText: isPasswordVisible ? false : true,
-              decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: "Confirm Password",
-                  //hintText: "password",
+              // email textfeld
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  fillColor: Theme.of(context).colorScheme.primary,
+                  prefixIcon: Icon(Icons.email),
+                  labelText: "Email",
+                  hintText: "XXX@XXX.XXX",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                      icon: Icon(isPasswordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility))),
-            ),
-            const SizedBox(height: 15),
+                ),
+              ),
+              const SizedBox(height: 10),
 
-            // consent
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                          value: isConsent,
-                          onChanged: (value) {
-                            setState(() {
-                              isConsent = !isConsent;
-                            });
-                          }),
-                      Text(
-                        "Agree to the ",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "User agreement",
+              // password textfeld
+              TextFormField(
+                controller: passwordController,
+                obscureText: isPasswordVisible ? false : true,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: "Password",
+                    //hintText: "password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: Icon(isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility))),
+              ),
+              const SizedBox(height: 10),
+
+              // confirm password textfeld
+              TextFormField(
+                controller: comfirmPassController,
+                obscureText: isPasswordVisible ? false : true,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: "Confirm Password",
+                    //hintText: "password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                        icon: Icon(isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility))),
+              ),
+              const SizedBox(height: 15),
+
+              // consent
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                            value: isConsent,
+                            onChanged: (value) {
+                              setState(() {
+                                isConsent = !isConsent;
+                              });
+                            }),
+                        Text(
+                          "Agree to the ",
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "User agreement",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // sign in button
+              MyButton(text: 'Register', onTap: register),
+              const SizedBox(height: 25),
+
+              // Already have an account?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account? ",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary),
                   ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              LoginPage(), // Navigates to the RegisterPage
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Login Here",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                  )
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-
-            // sign in button
-            MyButton(text: 'Register', onTap: register),
-            const SizedBox(height: 25),
-
-            // Already have an account?
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Already have an account? ",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginPage(), // Navigates to the RegisterPage
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "Login Here",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                )
-              ],
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

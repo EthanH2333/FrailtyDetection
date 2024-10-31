@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'package:frailtyapp/pages/home_page.dart';
+import 'package:StrideWell/helper/helper_function.dart';
+import 'package:StrideWell/pages/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PlanPage extends StatefulWidget {
   const PlanPage({super.key});
@@ -12,6 +14,7 @@ class PlanPage extends StatefulWidget {
 }
 
 class _PlanPageState extends State<PlanPage> {
+  double textSize = 10.0;
   Map<String, dynamic>? plan;
 
   @override
@@ -58,7 +61,7 @@ class _PlanPageState extends State<PlanPage> {
     }
   }
 
-// Helper function to parse plain text plan into a structured map
+  // Helper function to parse plain text plan into a structured map
   Map<String, dynamic> _parsePlanString(String planText) {
     Map<String, dynamic> parsedPlan = {};
 
@@ -100,6 +103,34 @@ class _PlanPageState extends State<PlanPage> {
     return parsedPlan;
   }
 
+  bool _isValidUrl(String line) {
+    final urlPattern = r"^\d+\.\s?(http|https):\/\/[^\s]+$";
+    bool isVal = RegExp(urlPattern).hasMatch(line);
+    return isVal;
+  }
+
+  String extractUrl(String line) {
+    // Regular expression to match and remove the leading number and dot (e.g., "1. ", "2. ")
+    final urlPattern = RegExp(r'^\d+\.\s*');
+
+    // Replace the matching pattern with an empty string, leaving only the URL
+    String url = line.replaceFirst(urlPattern, '');
+
+    return url;
+  }
+
+  void _launchURL(String url) async {
+    String cleanURL = extractUrl(url);
+    if (await canLaunch(cleanURL)) {
+      await launch(cleanURL);
+    } else {
+      displayMessage(
+          'Something wrong with the resources, please try again later.',
+          context);
+      print('Could not launch $cleanURL');
+    }
+  }
+
   void _showErrorDialog() {
     showDialog(
       context: context,
@@ -124,10 +155,60 @@ class _PlanPageState extends State<PlanPage> {
     );
   }
 
+  // Helper function to make each link clickable
+  Widget _buildClickableLinks(String content) {
+    print('object: $content');
+    List<String> lines = content.split("\n");
+    print("lines: $lines");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: lines.map((line) {
+        if (_isValidUrl(line)) {
+          return GestureDetector(
+            onTap: () => _launchURL(line),
+            child: Text(
+              line,
+              style: TextStyle(
+                fontSize: textSize,
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          );
+        }
+        return Text(line, style: TextStyle(fontSize: textSize));
+      }).toList(),
+    );
+  }
+
   Widget _buildPlanSection(String title, String content) {
+    print("Title is : $title");
     // Remove the repeated title from content if it starts with the title
     if (content.startsWith("$title:")) {
       content = content.replaceFirst("$title:\n", "");
+    }
+
+    if (title == "Sources used") {
+      // Render clickable links for the "Sources used" section
+      return Card(
+        color: Theme.of(context).colorScheme.secondary,
+        margin: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: textSize + 3, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              _buildClickableLinks(content),
+            ],
+          ),
+        ),
+      );
     }
 
     return Card(
@@ -140,10 +221,11 @@ class _PlanPageState extends State<PlanPage> {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: textSize + 3, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
-            Text(content, style: TextStyle(fontSize: 16)),
+            Text(content, style: TextStyle(fontSize: textSize)),
           ],
         ),
       ),
@@ -152,6 +234,11 @@ class _PlanPageState extends State<PlanPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonTextSize = screenWidth * 0.02;
+    setState(() {
+      textSize = buttonTextSize;
+    });
     return Scaffold(
       appBar: AppBar(title: Text('Care Plan')),
       body: plan == null

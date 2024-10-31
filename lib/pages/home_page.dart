@@ -1,12 +1,13 @@
+import 'package:StrideWell/pages/login%20&%20singup/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/components/my_button.dart';
-import 'package:frailtyapp/helper/sp_service.dart';
-import 'package:frailtyapp/pages/mobility%20test/part1_intro.dart';
-import 'package:frailtyapp/pages/mobility%20test/part2_intro.dart';
-import 'package:frailtyapp/pages/plan_page.dart';
-import 'package:frailtyapp/pages/waiting_page.dart';
+import 'package:StrideWell/components/my_button.dart';
+import 'package:StrideWell/helper/sp_service.dart';
+import 'package:StrideWell/pages/mobility%20test/part1_intro.dart';
+import 'package:StrideWell/pages/mobility%20test/part2_intro.dart';
+import 'package:StrideWell/pages/plan_page.dart';
+import 'package:StrideWell/pages/waiting_page.dart';
 
 import 'login & singup/intro_screen/general/survey.dart';
 
@@ -24,6 +25,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       FirebaseAuth.instance.signOut();
     });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
   }
 
   // Current logged in user

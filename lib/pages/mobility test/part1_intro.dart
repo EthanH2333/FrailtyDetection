@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/pages/mobility%20test/gaitSpeedTest.dart';
+import 'package:StrideWell/pages/mobility%20test/gaitSpeedTest.dart';
 import '../../helper/speak_function.dart';
 
 class Part1_intro extends StatefulWidget {

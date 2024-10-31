@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/helper/speak_function.dart';
-import 'package:frailtyapp/pages/mobility%20test/TUGTest.dart';
+import 'package:StrideWell/helper/speak_function.dart';
+import 'package:StrideWell/pages/mobility%20test/TUGTest.dart';
 
 class Part2_intro extends StatefulWidget {
   const Part2_intro({super.key});

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/pages/plan_page.dart';
+import 'package:StrideWell/pages/plan_page.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -195,7 +195,7 @@ class _WaitingPageState extends State<WaitingPage> {
 
   void _onButtonPressed() {
     updateProgress();
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => PlanPage(),

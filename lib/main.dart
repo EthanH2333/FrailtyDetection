@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/auth/auth.dart';
-import 'package:frailtyapp/auth/login_or_register.dart';
-import 'package:frailtyapp/firebase_options.dart';
-import 'package:frailtyapp/theme/dark_mode.dart';
-import 'package:frailtyapp/theme/light_mode.dart';
+import 'package:StrideWell/auth/auth.dart';
+import 'package:StrideWell/auth/login_or_register.dart';
+import 'package:StrideWell/firebase_options.dart';
+import 'package:StrideWell/theme/dark_mode.dart';
+import 'package:StrideWell/theme/light_mode.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

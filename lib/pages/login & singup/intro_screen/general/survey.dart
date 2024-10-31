@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/helper/sp_service.dart';
-import 'package:frailtyapp/helper/speak_function.dart';
-import 'package:frailtyapp/pages/home_page.dart';
+import 'package:StrideWell/helper/sp_service.dart';
+import 'package:StrideWell/helper/speak_function.dart';
+import 'package:StrideWell/pages/home_page.dart';
 
 class SelectOne extends StatefulWidget {
   const SelectOne({super.key});

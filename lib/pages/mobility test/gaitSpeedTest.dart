@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frailtyapp/helper/speak_function.dart';
-import 'package:frailtyapp/pages/home_page.dart';
+import 'package:StrideWell/helper/speak_function.dart';
+import 'package:StrideWell/pages/home_page.dart';
 import 'package:sensors_plus/sensors_plus.dart'; // For accessing sensors
 import 'dart:async';
 import 'dart:math';
